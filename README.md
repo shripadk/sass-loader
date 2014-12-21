@@ -44,7 +44,7 @@ Then you only need to write: `require("./file.scss")`. See [`node-sass`](https:/
 
 ## Install
 
-`npm install sass-loader`
+`npm install sass-loader-sync`
 
 ## Caveats
 
