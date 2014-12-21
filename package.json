@@ -1,6 +1,6 @@
 {
   "name": "sass-loader-sync",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "SASS loader for Webpack (with support for enhanced require)",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jtangelder/sass-loader.git"
+    "url": "git://github.com/shripadk/sass-loader.git"
   },
   "author": "J. Tangelder",
   "license": "MIT",
