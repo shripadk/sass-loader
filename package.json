@@ -1,7 +1,7 @@
 {
-  "name": "sass-loader",
+  "name": "sass-loader-sync",
   "version": "0.3.1",
-  "description": "SASS loader for Webpack",
+  "description": "SASS loader for Webpack (with support for enhanced require)",
   "main": "index.js",
   "scripts": {
     "pretest": "node test/prepare.js",

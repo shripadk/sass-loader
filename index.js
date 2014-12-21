@@ -3,10 +3,7 @@ var sass = require('node-sass');
 var path = require('path');
 var sassGraph = require('sass-graph');
 
-module.exports = function (content) {
-    this.cacheable();
-    var callback = this.async();
-
+var asyncLoader = function (content, callback) {
     var opt = utils.parseQuery(this.query);
     opt.data = content;
 
@@ -26,7 +23,7 @@ module.exports = function (content) {
     // output compressed by default
     opt.outputStyle = opt.outputStyle || 'compressed';
     opt.stats = {};
-    
+
     var loadPaths = opt.includePaths;
     var markDependencies = function () {
         try {
@@ -36,7 +33,7 @@ module.exports = function (content) {
             }.bind(this));
         } catch (err) {
             this.emitError(err);
-        } 
+        }
     }.bind(this);
 
     opt.success = function (css) {
@@ -51,4 +48,42 @@ module.exports = function (content) {
     }.bind(this);
 
     sass.render(opt);
+};
+
+var syncLoader = function (content, callback) {
+    var opt = utils.parseQuery(this.query);
+    opt.data = content;
+
+    // skip empty files, otherwise it will stop webpack, see issue #21
+    if (opt.data.trim() === '') {
+        return content;
+    }
+
+    // set include path to fix imports
+    opt.includePaths = opt.includePaths || [];
+    opt.includePaths.push(path.dirname(this.resourcePath));
+    if (this.options.resolve && this.options.resolve.root) {
+        var root = [].concat(this.options.resolve.root);
+        opt.includePaths = opt.includePaths.concat(root);
+    }
+
+    // output compressed by default
+    opt.outputStyle = opt.outputStyle || 'compressed';
+    opt.stats = {};
+
+    try {
+        var css = sass.renderSync(opt);
+        return css.toString();
+    } catch(e) {
+        console.error(e);
+        return '';
+    }
+};
+
+module.exports = function (content) {
+    this.cacheable();
+    var callback = this.async();
+
+    if(!callback) return syncLoader.call(this, content);
+    asyncLoader.call(this, content, callback);
 };
