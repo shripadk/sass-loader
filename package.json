@@ -1,6 +1,6 @@
 {
   "name": "sass-loader-sync",
-  "version": "0.3.2",
+  "version": "0.4.2",
   "description": "SASS loader for Webpack (with support for enhanced require)",
   "main": "index.js",
   "scripts": {
@@ -16,17 +16,31 @@
     "type": "git",
     "url": "git://github.com/shripadk/sass-loader.git"
   },
-  "author": "J. Tangelder",
+  "author": {
+    "name": "J. Tangelder"
+  },
   "license": "MIT",
   "dependencies": {
     "loader-utils": "^0.2.5",
-    "node-sass": "^3.0.0",
-    "sass-graph": "git+https://github.com/lox/sass-graph.git#3a17328"
+    "node-sass": "^2.0.1",
+    "sass-graph": "^2.0.0"
   },
   "devDependencies": {
     "mocha": "^2.0.1",
     "raw-loader": "^0.5.1",
     "should": "^4.3.0",
     "webpack": "^1.4.0"
-  }
+  },
+  "gitHead": "c070a32bcefca00928a7ceb12f2ae3b6f1d1749c",
+  "readme": "# sass loader for [webpack](http://webpack.github.io/)\r\n\r\n\r\n## Usage\r\n\r\n[Documentation: Using loaders](http://webpack.github.io/docs/using-loaders.html)\r\n\r\n``` javascript\r\nvar css = require(\"!raw!sass!./file.scss\");\r\n// => returns compiled css code from file.scss, resolves imports\r\nvar css = require(\"!css!sass!./file.scss\");\r\n// => returns compiled css code from file.scss, resolves imports and url(...)s\r\n```\r\n\r\nUse in tandem with the [`style-loader`](https://github.com/webpack/style-loader) to add the css rules to your document:\r\n\r\n``` javascript\r\nrequire(\"!style!css!sass!./file.scss\");\r\n```\r\n\r\n### webpack config\r\n\r\nIt's recommended to adjust your `webpack.config` so `style!css!sass!` is applied automatically on all files ending on `.scss`:\r\n\r\n``` javascript\r\nmodule.exports = {\r\n  module: {\r\n    loaders: [\r\n      {\r\n        test: /\\.scss$/,\r\n        // Query parameters are passed to node-sass\r\n        loader: \"style!css!sass?outputStyle=expanded&\" +\r\n          \"includePaths[]=\" +\r\n            (path.resolve(__dirname, \"./bower_components\")) + \"&\" +\r\n          \"includePaths[]=\" +\r\n            (path.resolve(__dirname, \"./node_modules\"))\r\n      }\r\n    ]\r\n  }\r\n};\r\n```\r\n\r\nThen you only need to write: `require(\"./file.scss\")`. See [`node-sass`](https://github.com/andrew/node-sass) for the available options.\r\n\r\n## Install\r\n\r\n`npm install sass-loader-sync`\r\n\r\n## Caveats\r\n\r\nCurrently the sass-loader does not follow all of the webpack loader guidelines. The general problem is that the entry scss-file is passed to [node-sass](https://github.com/sass/node-sass) which does pretty much the rest. Thus `@import` statements inside your scss-files cannot be resolved by webpack's resolver. However, there is an [issue for that missing feature in libsass](https://github.com/sass/libsass/issues/21).\r\n\r\n## License\r\n\r\nMIT (http://www.opensource.org/licenses/mit-license.php)\r\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/shripadk/sass-loader/issues"
+  },
+  "homepage": "https://github.com/shripadk/sass-loader",
+  "_id": "sass-loader-sync@0.4.2",
+  "_shasum": "d1b3f087623e5c933ddb1db1eeb1507234c5fa0b",
+  "_from": "git://github.com/homeslicesolutions/sass-loader.git#c070a32b",
+  "_resolved": "git://github.com/homeslicesolutions/sass-loader.git#c070a32bcefca00928a7ceb12f2ae3b6f1d1749c",
+  "_fromGithub": true
 }

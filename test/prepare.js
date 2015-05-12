@@ -15,13 +15,16 @@ var path = require('path');
             var filename;
 
             files.push(filename = path.join(__dirname, ext, file));
-            return sass.renderSync({
+
+            var result = sass.renderSync({
                 outputStyle: 'compressed',
                 file: filename,
                 includePaths: [
                     path.join(__dirname, ext, 'another')
                 ]
             })
+
+            return result.css;
         })
         .forEach(function (content, index) {
             fs.writeFileSync(files[index].replace(new RegExp('\\.' + ext + '$', 'gi'), '.css'), content, 'utf8');

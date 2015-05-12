@@ -36,9 +36,20 @@ var asyncLoader = function (content, callback) {
         }
     }.bind(this);
 
-    opt.success = function (css) {
+    opt.success = function (result) {
         markDependencies();
-        callback(null, css);
+
+        if (result.map && result.map !== '{}') {
+            result.map = JSON.parse(result.map);
+            result.map.file = this.resourcePath;
+            // The first source is 'stdin' according to libsass because we've used the data input
+            // Now let's override that value with the correct relative path
+            result.map.sources[0] = path.relative(self.options.output.path, resourcePath);
+        } else {
+            result.map = null;
+        }
+
+        callback(null, result.css.toString(), result.map);
     }.bind(this);
 
     opt.error = function (err) {
@@ -72,8 +83,8 @@ var syncLoader = function (content, callback) {
     opt.stats = {};
 
     try {
-        var css = sass.renderSync(opt);
-        return css.toString();
+        var result = sass.renderSync(opt);
+        return result.css.toString();
     } catch(e) {
         console.error(e);
         return '';
